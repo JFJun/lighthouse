@@ -1,10 +1,4 @@
-import {
-  authHeaders,
-  DAOContractClient,
-  DECENTRALAND_ADDRESS,
-  initializeMetricsServer
-} from '@dcl/catalyst-node-commons'
-import { DAOContract } from '@dcl/catalyst-contracts'
+import { authHeaders, DECENTRALAND_ADDRESS, initializeMetricsServer } from '@dcl/catalyst-node-commons'
 import { COMMS_API } from '@dcl/catalyst-api-specs'
 import cors from 'cors'
 import express from 'express'
@@ -15,7 +9,7 @@ import { ConfigService } from './config/configService'
 import { lighthouseConfigStorage } from './config/simpleStorage'
 import { metricsComponent } from './metrics'
 import { patchLog } from './misc/logging'
-import { pickName } from './misc/naming'
+import { pickNameV2 } from './misc/naming'
 import { IRealm } from './peerjs-server'
 import { ArchipelagoService } from './peers/archipelagoService'
 import { IdService } from './peers/idService'
@@ -25,6 +19,8 @@ import { peersCheckJob } from './peers/peersCheckJob'
 import { PeersService } from './peers/peersService'
 import { configureRoutes } from './routes'
 import { AppServices } from './types'
+import { HTTPProvider } from 'eth-connect'
+import { DAOClient } from './DAOClient'
 
 const LIGHTHOUSE_PROTOCOL_VERSION = '1.0.0'
 const DEFAULT_ETH_NETWORK = 'ropsten'
@@ -32,9 +28,16 @@ const DEFAULT_ETH_NETWORK = 'ropsten'
 const CURRENT_ETH_NETWORK = process.env.ETH_NETWORK ?? DEFAULT_ETH_NETWORK
 
 async function main() {
-  const daoClient = new DAOContractClient(DAOContract.withNetwork(CURRENT_ETH_NETWORK))
+  //--------------------------write by flynn-----------------------------
+  const ethereumProvider = new HTTPProvider(
+    `https://rpc.decentraland.org/${encodeURIComponent(CURRENT_ETH_NETWORK)}?project=catalyst-comms`
+  )
+  const daoClient = new DAOClient(ethereumProvider)
 
-  const name = await pickName(process.env.LIGHTHOUSE_NAMES, daoClient)
+  const name = await pickNameV2(process.env.LIGHTHOUSE_NAMES, daoClient)
+
+  // const daoClient = new DAOContractClient(DAOContract.withNetwork(CURRENT_ETH_NETWORK))
+  //const name = await pickName(process.env.LIGHTHOUSE_NAMES, daoClient)
   console.info('Picked name: ' + name)
 
   patchLog(name)
