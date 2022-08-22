@@ -26,9 +26,9 @@ import fetch from 'node-fetch'
 const LIGHTHOUSE_PROTOCOL_VERSION = '1.0.0'
 const DEFAULT_ETH_NETWORK = 'goerli'
 
-// const CURRENT_ETH_NETWORK = process.env.ETH_NETWORK ?? DEFAULT_ETH_NETWORK
-const CURRENT_ETH_NETWORK = DEFAULT_ETH_NETWORK
-console.log('current network:', CURRENT_ETH_NETWORK)
+const CURRENT_ETH_NETWORK = process.env.ETH_NETWORK ?? DEFAULT_ETH_NETWORK
+
+console.log('===>current network:', CURRENT_ETH_NETWORK)
 
 async function main() {
   //--------------------------write by flynn-----------------------------
