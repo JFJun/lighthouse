@@ -23,14 +23,16 @@ import { HTTPProvider } from 'eth-connect'
 import { DAOClient } from './DAOClient'
 
 const LIGHTHOUSE_PROTOCOL_VERSION = '1.0.0'
-const DEFAULT_ETH_NETWORK = 'ropsten'
+const DEFAULT_ETH_NETWORK = 'goerli'
 
-const CURRENT_ETH_NETWORK = process.env.ETH_NETWORK ?? DEFAULT_ETH_NETWORK
+// const CURRENT_ETH_NETWORK = process.env.ETH_NETWORK ?? DEFAULT_ETH_NETWORK
+const CURRENT_ETH_NETWORK = DEFAULT_ETH_NETWORK
+console.log('current network:', CURRENT_ETH_NETWORK)
 
 async function main() {
   //--------------------------write by flynn-----------------------------
   const ethereumProvider = new HTTPProvider(
-    `https://rpc.decentraland.org/${encodeURIComponent(CURRENT_ETH_NETWORK)}?project=catalyst-comms`
+    `https://rpc.decentraland.org/${encodeURIComponent(CURRENT_ETH_NETWORK)}?project=catalyst-content`
   )
   const daoClient = new DAOClient(ethereumProvider)
 
