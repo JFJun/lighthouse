@@ -21,6 +21,7 @@ import { configureRoutes } from './routes'
 import { AppServices } from './types'
 import { HTTPProvider } from 'eth-connect'
 import { DAOClient } from './DAOClient'
+import fetch from 'node-fetch'
 
 const LIGHTHOUSE_PROTOCOL_VERSION = '1.0.0'
 const DEFAULT_ETH_NETWORK = 'goerli'
@@ -32,7 +33,8 @@ console.log('current network:', CURRENT_ETH_NETWORK)
 async function main() {
   //--------------------------write by flynn-----------------------------
   const ethereumProvider = new HTTPProvider(
-    `https://rpc.decentraland.org/${encodeURIComponent(CURRENT_ETH_NETWORK)}?project=catalyst-content`
+    `https://${encodeURIComponent(CURRENT_ETH_NETWORK)}.infura.io/v3/65b4470058624aa493c1944328b19ec0`,
+    { fetch }
   )
   const daoClient = new DAOClient(ethereumProvider)
 

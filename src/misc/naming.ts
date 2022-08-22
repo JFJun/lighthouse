@@ -53,6 +53,7 @@ async function getLighthousesNamesV2(daoClient: DAOClient) {
   const servers = await daoClient.getAllServers()
   console.log('===> getAllServers', servers)
   const namePromises = await Promise.all(Array.from(servers).map(getNameV2).map(noReject))
+  console.log('===> namePromises,', namePromises)
   const existingNames: string[] = namePromises.filter((result) => result[0] === 'fulfilled').map((result) => result[1])
   return existingNames
 }
